@@ -29,21 +29,22 @@ public static class SettingDAO
                 BinaryFormatter formatter = new BinaryFormatter();
                 stream = new FileStream(path, FileMode.Open);
                 SettingDTO dto = formatter.Deserialize(stream) as SettingDTO;
-                Debug.LogError("Loading result/ mute =  "+dto.getMute());
+                Debug.LogError("Loading result/ volume =  "+dto.getVolume());
                 stream.Close();
                 return dto;
             }
             catch (Exception e)
             {
-                Debug.LogError("Loadign error : " + e.StackTrace);
+                Debug.LogError("Loading error : " + e.StackTrace);
                 stream.Close();
-                return null;
+                File.Delete(path);
+                return new SettingDTO();
             }
             
         }
         else {
             Debug.LogError("Setting file not found at "+path);
-            return null;
+            return new SettingDTO();
         }
 
     }

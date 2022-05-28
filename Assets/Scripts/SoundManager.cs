@@ -4,49 +4,29 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    private static AudioSource player;
+    private static AudioSource[] player;
     public AudioClip[] clips;
-    public GameObject On;
-    public GameObject Off;
-    private static bool mute;
-    SettingDTO dto;
 
     // Start is called before the first frame update
     void Start()
     {
-        player = GetComponent<AudioSource>();
-        Off.SetActive(false);
-        dto = SettingDAO.LoadSetting();
-
-        if (dto == null)
-        {
-            dto = new SettingDTO(false);
-        }
-
-        On.SetActive(!dto.getMute());
-        Off.SetActive(dto.getMute());
-        player.mute = dto.getMute();
-
-    }
-
-    public void muteButton() {
-
-        On.SetActive(dto.getMute());
-        Off.SetActive(!dto.getMute());
-        player.mute = !dto.getMute();
-
-        dto.setMute(!dto.getMute());
-        SettingDAO.SaveSetting(dto);
+        player = GetComponents<AudioSource>();
     }
 
     public static void playSound(AudioClip clip) {
-        player.Stop();
-        player.clip = clip;
-        player.time = 0;
-        player.Play();
+
+        for(int i = 0; i < player.Length; i++){
+            player[i].Stop();
+            player[i].clip = clip;
+            player[i].time = 0;
+        }
+
+        for(int i = 0; i < player.Length; i++){
+            player[i].Play();
+        }
     }
 
     public static bool isPlaying() {
-        return player.isPlaying;
+        return player[0].isPlaying;
     }
 }

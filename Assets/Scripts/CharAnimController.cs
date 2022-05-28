@@ -25,7 +25,7 @@ public class CharAnimController : MonoBehaviour
         cam = Camera.main;
     }
 
-    void login() { 
+    void loginPlayVoice(){
         SoundManager.playSound(AM.clips[0]);
     }
 
@@ -35,7 +35,7 @@ public class CharAnimController : MonoBehaviour
         {
             t.flag = false;
             isLogin = true;
-            Invoke("login", 6f);
+            Invoke("loginPlayVoice", 6f);
         }
         else {
             if (charAnim.GetCurrentAnimatorClipInfo(0)[0].clip.name == "idle")
@@ -94,7 +94,7 @@ public class CharAnimController : MonoBehaviour
             pos = cam.ScreenToWorldPoint(pos);
 
             RaycastHit2D hit = Physics2D.Raycast(pos, transform.forward, 15f);
-
+            print(hit.transform.name);
             if (hit) {
                 if (hit.transform.name == "TouchHead")
                 {
@@ -110,10 +110,6 @@ public class CharAnimController : MonoBehaviour
                 {
                     SoundManager.playSound(AM.clips[6]);
                     charAnim.SetTrigger("TouchBody");
-                }
-                else if (hit.transform.name == "Mute")
-                {
-                    AM.muteButton();
                 }
             }
         }
